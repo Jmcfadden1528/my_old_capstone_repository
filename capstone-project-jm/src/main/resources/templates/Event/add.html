@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head></head>
+
+<body>
+
+<h1 th:text="${title}">Default Title</h1>
+
+
+
+<form method="post" th:object="${event}">
+    <div>
+        <label th:for="name">Title of event: </label>
+        <input th:field="*{name}" />
+    </div>
+    <div>
+        <label th:for="date">Date of event: </label>
+        <input th:field="*{date}" />
+    </div>
+    <div>
+        <label th:for="time">Start time of event: </label>
+        <input th:field="*{time}" />
+    </div>
+    <div>
+        <label th:for="location">Location of event: </label>
+        <input  th:field="*{location}" />
+    </div>
+
+    <input type="submit" value="Add Event" />
+</form>
+
+</body>
+</html>
