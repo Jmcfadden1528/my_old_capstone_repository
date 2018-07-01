@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head></head>
 <body>
+<h1 th:text="${theEvent.name}"></h1>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Time</th>
+    </tr>
+
+    <tr>
+        <td th:text="${#dates.format(theEvent.date, 'dd-MM-yyyy')}"></td>
+        <td th:text="${theEvent.location}"></td>
+        <td th:text="${theEvent.time}"></td>
+    </tr>
+</table>
 
 </body>
 </html>

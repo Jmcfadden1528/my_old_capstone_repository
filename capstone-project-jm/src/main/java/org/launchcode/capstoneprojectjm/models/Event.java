@@ -24,9 +24,7 @@ public class Event {
     @NotNull
     private String name;
 
-
-
-    private Calendar date;
+    private Date date;
 
     @NotNull
     private Time time;
@@ -38,7 +36,7 @@ public class Event {
 
 
 
-    public Event(String name, Calendar date, Time time, String location) {
+    public Event(String name, Date date, Time time, String location) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -50,9 +48,9 @@ public class Event {
 
     public void setName(String name) {this.name = name;}
 
-    public String getDate() {return this.date;}
+    public Date getDate() {return this.date;}
 
-    public void setDate(String date) {this.date = date;}
+    public void setDate(Date date) {this.date = date;}
 
     public Time getTime() {return time;}
 

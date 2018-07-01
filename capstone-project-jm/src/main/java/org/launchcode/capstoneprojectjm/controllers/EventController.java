@@ -55,4 +55,12 @@ public class EventController {
         return "redirect:";
     }
 
+    @RequestMapping(value = "event-view/{id}")
+    public String displayEvent(Model model, @PathVariable int id) {
+        Event theEvent = eventDao.findOne(id);
+        model.addAttribute("theEvent", theEvent);
+
+        return "event/event-view";
+    }
+
 }
