@@ -18,7 +18,6 @@ import javax.validation.Valid;
 public class EventController {
 
 
-
     @Autowired
     private EventDao eventDao; // Allows us to interact with database
 

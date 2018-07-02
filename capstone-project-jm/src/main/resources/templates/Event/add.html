@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head></head>
+<head th:replace="fragments :: head"></head>
+<body class="container">
 
-<body>
+<nav th:replace="fragments :: navigation"></nav>
 
 <h1 th:text="${title}">Default Title</h1>
 
 
 
 <form method="post" th:object="${event}">
-    <div>
+    <div class="form-group" width="600px">
         <label th:for="name">Title of event: </label>
         <input th:field="*{name}" />
     </div>
-    <div>
+    <div class="form-group">
         <label th:for="date">Date of event: </label>
         <input type="date" th:field="*{date}" />
     </div>
-    <div>
+    <div class="form-group">
         <label th:for="time">Start time of event: </label>
         <input th:field="*{time}" />
     </div>
-    <div>
+    <div class="form-group">
         <label th:for="location">Location of event: </label>
         <input  th:field="*{location}" />
     </div>
-
+    <div class="form-group">
+        <label th:for="description">Description: </label>
+        <input th:field="*{description}" />
+    </div>
     <input type="submit" value="Add Event" />
 </form>
 

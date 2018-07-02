@@ -19,9 +19,9 @@ public class User {
     String password;
     String email;
 
-    User() {}
+    public User() {}
 
-    User(String username, String firstname, String lastname, String password, String email) {
+    public User(String username, String firstname, String lastname, String password, String email) {
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -49,7 +49,9 @@ public class User {
 
     public void setPassword(String password) {this.password = password;}
 
+    public String getEmail(){return email;}
 
+    public void setEmail(String email) {this.email = email;}
 
 
 }

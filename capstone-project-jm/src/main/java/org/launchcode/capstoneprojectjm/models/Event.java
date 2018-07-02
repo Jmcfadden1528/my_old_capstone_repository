@@ -17,6 +17,8 @@ import static javax.print.attribute.standard.MediaPrintableArea.MM;
 @Entity // Required for hibernate to store/get instances from database
 public class Event {
 
+
+
     @Id
     @GeneratedValue
     private int id;
@@ -32,17 +34,26 @@ public class Event {
     @NotNull
     private String location;
 
+    @NotNull
+    private String description;
+
+
     public Event() { }
 
 
 
-    public Event(String name, Date date, Time time, String location) {
+    public Event(String name, Date date, Time time, String location, String description) {
         this.name = name;
         this.date = date;
         this.time = time;
         this.location = location;
+        this.description = description;
     }
 
+
+    public int getId() {return id;}
+
+    public void setId(int id) {this.id = id;}
 
     public String getName() {return name;}
 
@@ -60,5 +71,8 @@ public class Event {
 
     public void setLocation(String location) {this.location = location;}
 
+    public String getDescription() {return description;}
+
+    public void setDescription(String description) {this.description = description;}
 
 }
