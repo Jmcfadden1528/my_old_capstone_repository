@@ -44,11 +44,13 @@ public class EventController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddEventForm(@ModelAttribute @Valid Event newEvent,
                                        Errors errors, Model model) {
-        System.out.println("works to here!");
-        /*if (errors.hasErrors()) {
+
+        if (errors.hasErrors()) {
             model.addAttribute("title", "Add Event");
+            model.addAttribute("event", newEvent);
             return "event/add";
-        }*/
+        }
+        model.addAttribute("event", newEvent);
         eventDao.save(newEvent);
 
         return "redirect:";

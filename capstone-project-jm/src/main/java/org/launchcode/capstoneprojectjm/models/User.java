@@ -2,9 +2,10 @@ package org.launchcode.capstoneprojectjm.models;
 
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.List;
 
 
 @Entity // Required for hibernate to store/get instances of a database
@@ -13,12 +14,31 @@ public class User {
     @Id
     @GeneratedValue
     private int id;
-    String username;
-    String firstname;
-    String lastname;
-    String password;
-    String email;
 
+    @NotNull
+    @Size(min=3, message="Username must be at least 3 characters")
+    private String username;
+
+    @NotNull
+    @Size(min=1, message="First name cannot be left blank")
+    private String firstname;
+
+    @NotNull
+    @Size(min=1, message="Last name cannot be left blank")
+    private String lastname;
+
+    @NotNull
+    @Size(min=5, message="Password must be at least 5 characters")
+    private String password;
+
+    @NotNull
+    @Email(message="Not a valid e-mail address")
+    @Size(min=1, message="E-mail cannot be left blank")
+    private String email;
+
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    private List<Event> events;
     public User() {}
 
     public User(String username, String firstname, String lastname, String password, String email) {

@@ -1,13 +1,14 @@
 package org.launchcode.capstoneprojectjm.models;
 
+import javafx.util.converter.TimeStringConverter;
 import org.springframework.data.jpa.repository.Temporal;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
+
 import java.sql.Time;
 import java.util.Calendar;
 
@@ -24,20 +25,25 @@ public class Event {
     private int id;
 
     @NotNull
+    @Size(min=1, message="name cannot be left blank")
     private String name;
+
+    @NotNull(message="Date cannot be left blank")
 
     private Date date;
 
-    @NotNull
     private Time time;
 
     @NotNull
+    @Size(min=1, message="location cannot be left blank")
     private String location;
 
     @NotNull
+    @Size(min=1, message="description cannot be left blank")
     private String description;
 
-
+    @ManyToOne
+    private User user;
     public Event() { }
 
 

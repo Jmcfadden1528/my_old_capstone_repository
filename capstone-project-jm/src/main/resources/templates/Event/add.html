@@ -13,22 +13,27 @@
     <div class="form-group" width="600px">
         <label th:for="name">Title of event: </label>
         <input th:field="*{name}" />
+        <span th:errors="*{name}" class="error"></span>
     </div>
     <div class="form-group">
         <label th:for="date">Date of event: </label>
         <input type="date" th:field="*{date}" />
+        <span th:errors="*{date}" class="error"></span>
     </div>
     <div class="form-group">
         <label th:for="time">Start time of event: </label>
         <input th:field="*{time}" />
+        <!-- <span th:errors="*{time}" class="error"></span> -->
     </div>
     <div class="form-group">
         <label th:for="location">Location of event: </label>
         <input  th:field="*{location}" />
+        <span th:errors="*{location}" class="error"></span>
     </div>
     <div class="form-group">
         <label th:for="description">Description: </label>
         <input th:field="*{description}" />
+        <span th:errors="*{description}" class="errors"></span>
     </div>
     <input type="submit" value="Add Event" />
 </form>
