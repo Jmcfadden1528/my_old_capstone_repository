@@ -3,7 +3,7 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
 
-
+<nav th:replace="fragments :: navigation"></nav>
 
 <h1 th:text="${title}">Default Title</h1>
 
@@ -42,7 +42,7 @@
         <input id="verify-field" type="password" name="verify" />
         <span th:text="${message}" class="errors"></span>
     </div>
-    <input type="submit" value="Sign up" />
+    <input type="submit" value="Add Event" />
 </form>
 
 

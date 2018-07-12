@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
+//TODO: add admin role
 
 @Entity // Required for hibernate to store/get instances of a database
 public class User {
@@ -36,9 +37,12 @@ public class User {
     @Size(min=1, message="E-mail cannot be left blank")
     private String email;
 
-    @OneToMany
-    @JoinColumn(name = "user_id")
+
+    @ManyToMany
+    @JoinTable(name = "user_ids")
     private List<Event> events;
+
+
     public User() {}
 
     public User(String username, String firstname, String lastname, String password, String email) {
@@ -72,6 +76,27 @@ public class User {
     public String getEmail(){return email;}
 
     public void setEmail(String email) {this.email = email;}
+
+
+    public List<Event> getEvents() {return events;}
+
+    public void setEvents(List<Event> events) {this.events = events;}
+
+    public void addEvent(Event event) {events.add(event);}
+
+
+
+
+//    public List<Event> sortEventsByDate() {
+//        List<Event> events = this.getEvents();
+//        for (Event e : events) {
+//            e.getDate();
+
+
+
+//        }
+//
+//    }
 
 
 }

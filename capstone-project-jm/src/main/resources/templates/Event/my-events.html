@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:https="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 
 <body>
@@ -12,10 +12,11 @@
 
 <p th:unless="${events} and ${events.size()}">No events :(</p>
 
+
 <table class="table">
 
     <tr>
-        <th scope="col">Name</th>
+        <th>Name</th>
         <th>Date</th>
         <th>View Details</th>
 
@@ -25,11 +26,10 @@
         <td th:text="${event.name}"></td>
         <td th:text="${event.date}"></td>
         <td><a th:href="@{'/event/event-view/' + ${event.id}}">View Details</a></td>
-
     </tr>
-
 </table>
 
+<a href="remove-event">Remove events</a>
 
 </body>
 </html>

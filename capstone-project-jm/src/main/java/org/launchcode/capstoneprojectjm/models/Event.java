@@ -1,18 +1,15 @@
 package org.launchcode.capstoneprojectjm.models;
 
-import javafx.util.converter.TimeStringConverter;
-import org.springframework.data.jpa.repository.Temporal;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.awt.*;
+import java.io.File;
 import java.sql.Date;
-
 import java.sql.Time;
-import java.util.Calendar;
-
-import static javax.print.attribute.standard.MediaPrintableArea.MM;
+import java.util.List;
 
 
 @Entity // Required for hibernate to store/get instances from database
@@ -28,12 +25,13 @@ public class Event {
     @Size(min=1, message="name cannot be left blank")
     private String name;
 
-    @NotNull(message="Date cannot be left blank")
 
+
+    @NotNull(message="Date cannot be left blank")
     private Date date;
 
     private Time time;
-
+//TODO: delete event once date is past.
     @NotNull
     @Size(min=1, message="location cannot be left blank")
     private String location;
@@ -42,9 +40,16 @@ public class Event {
     @Size(min=1, message="description cannot be left blank")
     private String description;
 
-    @ManyToOne
-    private User user;
+
+//    private Image picture;
+
+
+
+    @ManyToMany(mappedBy="events")
+    private List<User> users;
     public Event() { }
+
+
 
 
 
@@ -80,5 +85,15 @@ public class Event {
     public String getDescription() {return description;}
 
     public void setDescription(String description) {this.description = description;}
+
+    public List<User> getUsers() {return users;}
+
+    public void setUsers(List<User> users) {this.users = users;}
+
+//    public Image getPicture() {
+//        return picture;
+//    }
+//
+//    public void setPicture(Image picture) {this.picture = picture;}
 
 }

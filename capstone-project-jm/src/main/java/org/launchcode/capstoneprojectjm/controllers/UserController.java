@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,7 +38,7 @@ public class UserController {
 
 
     @RequestMapping(value = "sign-up", method = RequestMethod.POST)
-    public String processSignUpForm(@ModelAttribute @Valid User newUser, Errors errors, String verify,
+    public String processSignUpForm(@ModelAttribute @Valid User newUser, HttpServletResponse response, Errors errors, String verify,
                                     Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("user", newUser);
@@ -54,7 +55,12 @@ public class UserController {
         if (!errors.hasErrors() && newUser.getPassword().equals(verify) && sameName.isEmpty()) {
             model.addAttribute("user", newUser);
             userDao.save(newUser);
-            return "user/index";
+
+            Cookie c = new Cookie("user", newUser.getUsername());
+            c.setPath("/");
+            c.setMaxAge(100);
+            response.addCookie(c);
+            return "redirect:/event/my-events";
         } else {
             model.addAttribute("user", newUser);
             model.addAttribute("title", "Sign Up");
@@ -95,8 +101,9 @@ public class UserController {
         if (loggedIn.getPassword().equals(user.getPassword())) {
             Cookie c = new Cookie("user", user.getUsername());
             c.setPath("/");
+            c.setMaxAge(100);
             response.addCookie(c);
-            return "redirect:/event";
+            return "redirect:/event/my-events";
         }
         else {
             model.addAttribute("message", "Invalid Password");
@@ -107,16 +114,20 @@ public class UserController {
 
 
     @RequestMapping(value = "logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
-            for (Cookie c : cookies) {
-                c.setMaxAge(0);
-                c.setPath("/");
-                response.addCookie(c);
-            }
-        }
-        return "user/login";
+    public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
+
+
+//        Cookie[] cookies = request.getCookies();
+//        if(cookies != null) {
+//            for (Cookie c : cookies) {
+//                c.setMaxAge(0);
+//                c.setPath("/");
+//                response.addCookie(c);
+//            }
+//        }
+        model.addAttribute("title", "User Login");
+        model.addAttribute(new User());
+        return "redirect:login";
     }
 
 }

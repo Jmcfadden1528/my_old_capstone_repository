@@ -30,8 +30,7 @@
 <p class="error" th:text="${duplicate_event_error}"></p>
 
 <p th:text="${imagePath}"></p>
-<img th:src="${imagePath}"/>
-<img src="/Kip.jpg"/>
+<img th:src="@{imagePath}"/>
 
 <div class="container">
 <h2>People who are going</h2>
