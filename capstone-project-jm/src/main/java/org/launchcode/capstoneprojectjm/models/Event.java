@@ -40,8 +40,7 @@ public class Event {
     @Size(min=1, message="description cannot be left blank")
     private String description;
 
-
-//    private Image picture;
+    private File image;
 
 
 
@@ -90,10 +89,10 @@ public class Event {
 
     public void setUsers(List<User> users) {this.users = users;}
 
-//    public Image getPicture() {
-//        return picture;
-//    }
-//
-//    public void setPicture(Image picture) {this.picture = picture;}
+    public File getImage() {
+        return image;
+    }
+
+    public void setPicture(File image) {this.image = image;}
 
 }

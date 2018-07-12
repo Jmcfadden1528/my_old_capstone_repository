@@ -10,10 +10,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import sun.misc.IOUtils;
+
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import static org.launchcode.capstoneprojectjm.controllers.FileUploadController.uploadDirectory;
 
 
 @Controller
@@ -60,22 +68,39 @@ public class EventController {
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddEventForm(@ModelAttribute @Valid Event newEvent, @RequestParam
+    public String processAddEventForm(@ModelAttribute @Valid Event newEvent, @RequestParam("image") File image,
             Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) throws IOException {
 
         if (username.equals("none")) {
             return "redirect:/user/login";
         }
-
-        User u = userDao.findByUsername(username).get(0);
-
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Event");
             model.addAttribute("event", newEvent);
             return "event/add";
         }
-        return "redirect:";
+        User u = userDao.findByUsername(username).get(0);
+        StringBuilder fileNames = new StringBuilder();
+            Path fileNameAndPath = Paths.get(uploadDirectory, image.getPath());
+
+
+        byte[] bFile = new byte[(int) image.length()];
+        //image.toPath didn't work
+        //byte[] array = Files.readAllBytes(new File("/path/to/file").toPath()) didn't work -- got absolute path i think
+        //byte[] bFile = Files.readAllBytes(Paths.get("sunrise.png")) didn't work -- got just file name (also didn't work with / in front)
+
+
+            try {
+                Files.write(fileNameAndPath, bFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        model.addAttribute("msg", "Successfully uploaded files "+fileNames.toString());
+        return "event/uploadstatusview";
     }
+
+
 
     @RequestMapping(value = "event-view/{id}")
     public String displayEvent(Model model, @PathVariable int id) throws IOException {
@@ -146,13 +171,14 @@ public class EventController {
         List<Event> userEventsEdit = u.getEvents();
         for (int id : ids) {
             userEventsEdit.remove(eventDao.findOne(id));
-            }
+        }
 
-            u.setEvents(userEventsEdit);
+        u.setEvents(userEventsEdit);
         userDao.save(u);
 
         return "redirect:";
     }
 }
+
 
 

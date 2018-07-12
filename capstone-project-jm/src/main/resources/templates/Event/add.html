@@ -35,6 +35,10 @@
         <input th:field="*{description}" />
         <span th:errors="*{description}" class="errors"></span>
     </div>
+    <div class="form-group">
+        <label th:for="image">Upload Image: </label>
+        <input type="file" th:field="*{image}" name="image"/>
+    </div>
 
     <input type="submit" value="Add Event" />
 </form>
