@@ -1,12 +1,12 @@
 package org.launchcode.capstoneprojectjm.models;
 
 
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.awt.*;
-import java.io.File;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -25,8 +25,6 @@ public class Event {
     @Size(min=1, message="name cannot be left blank")
     private String name;
 
-
-
     @NotNull(message="Date cannot be left blank")
     private Date date;
 
@@ -40,7 +38,11 @@ public class Event {
     @Size(min=1, message="description cannot be left blank")
     private String description;
 
-    private File image;
+    private String imageUrl;
+
+
+
+
 
 
 
@@ -89,10 +91,12 @@ public class Event {
 
     public void setUsers(List<User> users) {this.users = users;}
 
-    public File getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPicture(File image) {this.image = image;}
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
 }

@@ -36,8 +36,8 @@
         <span th:errors="*{description}" class="errors"></span>
     </div>
     <div class="form-group">
-        <label th:for="image">Upload Image: </label>
-        <input type="file" th:field="*{image}" name="image"/>
+        <label th:for="imageUrl">Link image to URL: </label>
+        <input type="text" th:field="*{imageUrl}" name="imageUrl"/>
     </div>
 
     <input type="submit" value="Add Event" />

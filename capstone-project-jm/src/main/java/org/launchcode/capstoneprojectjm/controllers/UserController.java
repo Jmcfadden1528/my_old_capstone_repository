@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -92,6 +89,7 @@ public class UserController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String processLoginForm(Model model, @ModelAttribute User user, HttpServletResponse response) {
         List<User> u = userDao.findByUsername(user.getUsername());
+
         if (u.isEmpty()) {
             model.addAttribute("message", "Invalid username");
             model.addAttribute("title", "User Login");
@@ -101,8 +99,14 @@ public class UserController {
         if (loggedIn.getPassword().equals(user.getPassword())) {
             Cookie c = new Cookie("user", user.getUsername());
             c.setPath("/");
-            c.setMaxAge(100);
             response.addCookie(c);
+
+            boolean admin = loggedIn.getAdmin();
+            if (admin == true) {
+                model.addAttribute("admin", true);
+                return "redirect:/event/my-events";
+            }
+
             return "redirect:/event/my-events";
         }
         else {
@@ -117,17 +121,49 @@ public class UserController {
     public String logout(Model model, HttpServletRequest request, HttpServletResponse response) {
 
 
-//        Cookie[] cookies = request.getCookies();
-//        if(cookies != null) {
-//            for (Cookie c : cookies) {
-//                c.setMaxAge(0);
-//                c.setPath("/");
-//                response.addCookie(c);
-//            }
-//        }
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for (Cookie c : cookies) {
+                c.setMaxAge(0);
+                c.setPath("/");
+                response.addCookie(c);
+            }
+        }
         model.addAttribute("title", "User Login");
         model.addAttribute(new User());
         return "redirect:login";
     }
 
-}
+    @RequestMapping(value = "profile-picture")
+    public String displayProfilePictureForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username,
+                                            @ModelAttribute User user, HttpServletResponse response) {
+
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+
+        return "user/profile-picture";
+    }
+
+    @RequestMapping(value = "profile-picture-updated")
+    public String processProfilePictureForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username,
+     @RequestParam("profilePictureUrl") String profilePictureUrl) {
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+        List<User> u = userDao.findByUsername(username);
+        User currentUser = u.get(0);
+
+        currentUser.setProfilePictureUrl(profilePictureUrl);
+        userDao.save(currentUser);
+
+        return "event/my-events";
+
+    }
+
+
+
+    }
+

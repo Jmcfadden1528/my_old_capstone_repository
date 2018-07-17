@@ -12,10 +12,13 @@
 
 
 <nav th:fragment="navigation">
+    <img align="right" style="vertical-align: top;" th:src="${currentUser.profilePictureUrl}" height="50" width="50" alt="No Image"/>
     <a href="/event">All Events</a> |
     <a href="/event/add">Add Event</a> |
     <a href="/event/my-events">My Events</a> |
     <a href="/user/logout">Logout</a>  |
+    <p th:if="${admin != true}">This is fucking retarded.</p>
+    <!--<a th:unless="${admin} != true" href="/admin">Admin Home</a>-->
 </nav>
 
 <!-- Optional JavaScript -->

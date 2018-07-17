@@ -1,8 +1,10 @@
 package org.launchcode.capstoneprojectjm.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -36,6 +38,11 @@ public class User {
     @Email(message="Not a valid e-mail address")
     @Size(min=1, message="E-mail cannot be left blank")
     private String email;
+
+    private boolean Admin;
+
+    private String profilePictureUrl;
+
 
 
     @ManyToMany
@@ -84,19 +91,19 @@ public class User {
 
     public void addEvent(Event event) {events.add(event);}
 
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
 
 
-
-//    public List<Event> sortEventsByDate() {
-//        List<Event> events = this.getEvents();
-//        for (Event e : events) {
-//            e.getDate();
-
-
-
-//        }
-//
-//    }
-
-
+    public boolean getAdmin() {
+        return Admin;
+    }
+    public void setAdmin(boolean admin) {
+        this.Admin = admin;
+    }
 }

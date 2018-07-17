@@ -10,18 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import sun.misc.IOUtils;
-
 import javax.validation.Valid;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 
-import static org.launchcode.capstoneprojectjm.controllers.FileUploadController.uploadDirectory;
 
 
 @Controller
@@ -46,8 +38,11 @@ public class EventController {
             return "redirect:/user/login";
         }
 
-        Iterable<Event> events = eventDao.findAll();
 
+        Iterable<Event> events = eventDao.findAll();
+        List<User> u = userDao.findByUsername(username);
+        User currentUser = u.get(0);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("events", events);
         model.addAttribute("title", "All Events");
 
@@ -61,55 +56,58 @@ public class EventController {
         if (username.equals("none")) {
             return "redirect:/user/login";
         }
-
+        List<User> u = userDao.findByUsername(username);
+        User currentUser = u.get(0);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("title", "Add Event");
         model.addAttribute(new Event());
         return "event/add";
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddEventForm(@ModelAttribute @Valid Event newEvent, @RequestParam("image") File image,
-            Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) throws IOException {
+    public String processAddEventForm(@ModelAttribute @Valid Event newEvent,
+            Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
 
         if (username.equals("none")) {
             return "redirect:/user/login";
         }
         if (errors.hasErrors()) {
+            List<User> u = userDao.findByUsername(username);
+            User currentUser = u.get(0);
+            model.addAttribute("currentUser", currentUser);
             model.addAttribute("title", "Add Event");
             model.addAttribute("event", newEvent);
             return "event/add";
         }
+
         User u = userDao.findByUsername(username).get(0);
-        StringBuilder fileNames = new StringBuilder();
-            Path fileNameAndPath = Paths.get(uploadDirectory, image.getPath());
+        eventDao.save(newEvent);
+        model.addAttribute("currentUser", u);
 
-
-        byte[] bFile = new byte[(int) image.length()];
-        //image.toPath didn't work
-        //byte[] array = Files.readAllBytes(new File("/path/to/file").toPath()) didn't work -- got absolute path i think
-        //byte[] bFile = Files.readAllBytes(Paths.get("sunrise.png")) didn't work -- got just file name (also didn't work with / in front)
-
-
-            try {
-                Files.write(fileNameAndPath, bFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        model.addAttribute("msg", "Successfully uploaded files "+fileNames.toString());
-        return "event/uploadstatusview";
+        return "event/event-added";
     }
 
 
 
     @RequestMapping(value = "event-view/{id}")
-    public String displayEvent(Model model, @PathVariable int id) throws IOException {
+    public String displayEvent(Model model, @PathVariable int id, @CookieValue(value = "user", defaultValue = "none") String username){
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
         Event theEvent = eventDao.findOne(id);
         List<User> usersAttending = theEvent.getUsers();
-
-
+        LocalDate todaysDate = LocalDate.now();
+        if (todaysDate.isAfter(theEvent.getDate().toLocalDate())) {
+            eventDao.delete(id);
+            return "event/event-has-passed";
+        }
+        List<User> u = userDao.findByUsername(username);
+        User currentUser = u.get(0);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", usersAttending);
         model.addAttribute("theEvent", theEvent);
+
 
         return "event/event-view";
     }
@@ -126,6 +124,7 @@ public class EventController {
         for (Event userEvent : u.getEvents()) {
             if (userEvent.getId() == addedEvent.getId()) {
                 Event theEvent = eventDao.findOne(id);
+                model.addAttribute("currentUser", u);
                 model.addAttribute("theEvent", theEvent);
                 model.addAttribute("duplicate_event_error", "This event has already been added.");
                 return "event/event-view";
@@ -142,13 +141,16 @@ public class EventController {
         if (username.equals("none")) {
             return "redirect:/user/login";
         }
+
         User u = userDao.findByUsername(username).get(0);
+        model.addAttribute("currentUser", u);
         List<Event> userEvents = u.getEvents();
         model.addAttribute("events", userEvents);
 
 
         return "event/my-events";
     }
+
 
     @RequestMapping(value = "remove-event", method = RequestMethod.GET)
     public String displayRemoveEventForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
@@ -158,7 +160,7 @@ public class EventController {
         }
 
         User u = userDao.findByUsername(username).get(0);
-
+        model.addAttribute("currentUser", u);
         model.addAttribute("events", u.getEvents());
         model.addAttribute("title", "Remove Events");
         return "event/remove-event";
@@ -179,6 +181,5 @@ public class EventController {
         return "redirect:";
     }
 }
-
 
 
