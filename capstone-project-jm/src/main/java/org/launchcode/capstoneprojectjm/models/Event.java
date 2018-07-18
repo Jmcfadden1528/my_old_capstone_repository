@@ -1,6 +1,9 @@
 package org.launchcode.capstoneprojectjm.models;
 
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -47,6 +50,7 @@ public class Event {
 
 
     @ManyToMany(mappedBy="events")
+    @Cascade(CascadeType.DELETE)
     private List<User> users;
     public Event() { }
 

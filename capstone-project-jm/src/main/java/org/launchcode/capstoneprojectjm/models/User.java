@@ -1,6 +1,7 @@
 package org.launchcode.capstoneprojectjm.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -46,6 +47,7 @@ public class User {
 
 
     @ManyToMany
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @JoinTable(name = "user_ids")
     private List<Event> events;
 

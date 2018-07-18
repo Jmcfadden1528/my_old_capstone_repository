@@ -180,6 +180,20 @@ public class EventController {
 
         return "redirect:";
     }
+
+    @RequestMapping(value = "google-maps")
+    public String displayMap(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+        User u = userDao.findByUsername(username).get(0);
+        model.addAttribute("currentUser", u);
+        model.addAttribute("title", "Big ol' fucking map");
+
+        return "event/google-maps";
+
+    }
 }
 
 
