@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h1 th:text="${title}">Default Title</h1>
+
+
+<div class="form">
+<form method="post" th:object="${event}">
+    <div class="form-group" width="600px">
+        <label th:for="name">Title of event: </label>
+        <input th:field="*{name}" />
+        <span th:errors="*{name}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="date">Date of event: </label>
+        <input type="date" th:field="*{date}" />
+        <span th:errors="*{date}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="time">Start time of event: </label>
+        <input th:field="*{time}" />
+        <!-- <span th:errors="*{time}" class="error"></span> -->
+    </div>
+    <div class="form-group">
+        <label th:for="location">Location of event: </label>
+        <input  th:field="*{location}" />
+        <span th:errors="*{location}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="description">Description: </label>
+        <input th:field="*{description}" />
+        <span th:errors="*{description}" class="errors"></span>
+    </div>
+    <div>
+        <label th:for="picture">Upload a picture: </label>
+        <input th:field="*{picture}" type="file" name="picture" />
+    </div>
+
+    <input type="submit" value="Add Event" />
+</form>
+</div>
+
+
+
+</body>
+</html>

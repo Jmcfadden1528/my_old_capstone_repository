@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h1 th:text="${title}">Default Title</h1>
+
+
+
+<form method="post" th:object="${user}">
+    <div class="form-group" width="600px">
+        <label th:for="firstname">First Name: </label>
+        <input th:field="*{firstname}" />
+        <span th:errors="*{firstname}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="lastname">Last Name: </label>
+        <input th:field="*{lastname}" />
+        <span th:errors="*{lastname}" class="errors"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="username">Username: </label>
+        <input th:field="*{username}" />
+        <span th:errors="*{username}" class="error"></span>
+        <span th:text="${usernameError}" class="error"></span>
+    </div>
+
+    <div class="form-group">
+        <label th:for="email">E-mail: </label>
+        <input th:field="*{email}" />
+        <span th:errors="*{email}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="password">Password: </label>
+        <input  type="password" th:field="*{password}" />
+        <span th:errors="*{password}" class="errors"></span>
+    </div>
+    <div class="form-group">
+        <label for="verify-field">Verify:</label>
+        <input id="verify-field" type="password" name="verify" />
+        <span th:text="${message}" class="errors"></span>
+    </div>
+    <input type="submit" value="Add Event" />
+</form>
+
+
+
+
+</body>
+</html>

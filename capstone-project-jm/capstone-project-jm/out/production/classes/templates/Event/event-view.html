@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body>
+
+<nav th:replace="fragments :: navigation"></nav>
+
+<h1 th:text="${theEvent.name}"></h1>
+<div class="table">
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Location</th>
+        <th>Time</th>
+        <th>Description</th>
+    </tr>
+
+    <tr>
+        <td th:text="${#dates.format(theEvent.date, 'dd-MM-yyyy')}"></td>
+        <td th:text="${theEvent.location}"></td>
+        <td th:text="${theEvent.time}"></td>
+        <td th:text="${theEvent.description}"></td>
+        <td><img src="file:\\C|\Users\Jonny\Pictures\Ron.jpg" alt="No Image" height="50" width="50"/></td>
+        <td><a th:href="@{'/event/event-added/' + ${theEvent.id}}">Attend event</a></td>
+
+    </tr>
+</table>
+</div>
+
+<p class="error" th:text="${duplicate_event_error}"></p>
+
+<p th:text="${imagePath}"></p>
+<img th:src="@{imagePath}"/>
+
+<div class="container">
+<h2>People who are going</h2>
+<ul th:each="user : ${users}">
+    <li th:text="${user.firstname} + ' ' + ${user.lastname}"></li>
+</ul>
+</div>
+
+
+</body>
+</html>
