@@ -102,10 +102,13 @@ public class EventController {
             eventDao.delete(id);
             return "event/event-has-passed";
         }
+
+
         List<User> u = userDao.findByUsername(username);
         User currentUser = u.get(0);
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", usersAttending);
+        model.addAttribute("num_of_ppl", usersAttending.size());
         model.addAttribute("theEvent", theEvent);
 
 
@@ -181,15 +184,23 @@ public class EventController {
         return "redirect:";
     }
 
-    @RequestMapping(value = "google-maps")
-    public String displayMap(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+    @RequestMapping(value = "google-maps/{id}")
+    public String displayMap(Model model, @PathVariable int id, @CookieValue(value = "user", defaultValue = "none") String username) {
 
         if (username.equals("none")) {
             return "redirect:/user/login";
         }
+
+        Event theEvent = eventDao.findOne(id);
+        double latitude = theEvent.getLatitude();
+        double longitude = theEvent.getLongitude();
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
         User u = userDao.findByUsername(username).get(0);
         model.addAttribute("currentUser", u);
-        model.addAttribute("title", "Big ol' fucking map");
+        model.addAttribute("title", "Big ol' map");
+        model.addAttribute("latlng", "{lat:" + -25.344 + "," + "lng:" + 131.036 + "}");
+
 
         return "event/google-maps";
 

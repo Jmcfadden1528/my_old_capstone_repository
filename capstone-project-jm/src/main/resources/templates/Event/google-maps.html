@@ -8,80 +8,42 @@
         width: 100%;  /* The width is the width of the web page */
        }
     </style>
+
+
+
 </head>
 <body>
-<h3>My Google Maps Demo</h3>
+<h3 th:text="${title}">My Google Maps Demo</h3>
 <!--The div element for the map -->
-<div id="map"></div>
-<script>
+<script th:inline="javascript">
+
 // Initialize and add the map
 function initMap() {
-  // The location of Uluru
-  var uluru = {lat: -25.344, lng: 131.036};
-  // The map, centered at Uluru
+  // The location
+
+  var latlng = {lat: [[${latitude}]], lng: [[${longitude}]]}
+  console.log(latlng);
+
+  // The map, centered at
   var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: uluru});
-  // The marker, positioned at Uluru
-  var marker = new google.maps.Marker({position: uluru, map: map});
+      document.getElementById('map'), {zoom: 4, center: latlng});
+  // The marker, positioned at
+  var marker = new google.maps.Marker({position: latlng, map: map});
 }
+
     </script>
 <!--Load the API from the specified URL
 * The async attribute allows the browser to render the page while the API loads
 * The key parameter will contain your own API key (which is not needed for this tutorial)
 * The callback parameter executes the initMap() function
 -->
+
+<div id="map"></div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCP3TtYXkTDRYEXa1DGLQ4e3w0hGW0UkXY&amp;callback=initMap"
         ></script>
 
+<p th:text="${latitude} + ' , ' + ${longitude}"></p>
+
 </body>
 </html>
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org/">-->
-
-
-<!--<head th:replace="fragments :: head">-->
-
-    <!--<style>-->
-    <!--#map {-->
-    <!--height = 100%;-->
-    <!--margin = 0;-->
-<!--}-->
-<!--</style>-->
-
-    <!--<script src = "https://maps.googleapis.com/maps/api/js?sensor=false">-->
-
-    <!--var mapOptions - {-->
-    <!--center: new google.maps.LatLng(37.7831,-122.4039),-->
-    <!--zoom: 12,-->
-    <!--mapTypeId: google.maps.MapTypeId.ROADMAP-->
-    <!--};-->
-
-    <!--new google.maps.Map(document.getElementById("map"), mapOptions);-->
-
-         <!--function loadMap() {-->
-            <!--var mapOptions = {-->
-               <!--center:new google.maps.LatLng(17.609993, 83.221436),-->
-               <!--zoom:12,-->
-               <!--mapTypeId:google.maps.MapTypeId.ROADMAP-->
-            <!--};-->
-            <!--var map = new google.maps.Map(document.getElementById("sample"),mapOptions);-->
-         <!--}-->
-         <!--google.maps.event.addDomListener(window, 'load', loadMap);-->
-      <!--</script>-->
-
-<!--</head>-->
-<!--<body>-->
-
-<!--<nav th:replace="fragments :: navigation"></nav>-->
-
-<!--<h1 th:text="${title}"></h1>-->
-
-<!--<div id = "map" style = "width:580px; height:400px;"></div>-->
-
-
-<!--</body>-->
-<!--</html>-->

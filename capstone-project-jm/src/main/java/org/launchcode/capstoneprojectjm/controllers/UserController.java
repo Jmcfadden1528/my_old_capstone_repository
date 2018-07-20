@@ -35,16 +35,16 @@ public class UserController {
 
 
     @RequestMapping(value = "sign-up", method = RequestMethod.POST)
-    public String processSignUpForm(@ModelAttribute @Valid User newUser, HttpServletResponse response, Errors errors, String verify,
+    public String processSignUpForm(@ModelAttribute @Valid User newUser, Errors errors, HttpServletResponse response, String verify,
                                     Model model) {
         if (errors.hasErrors()) {
             model.addAttribute("user", newUser);
             model.addAttribute("title", "Sign Up");
 
-            if (!newUser.getPassword().equals(verify)) {
-
-                model.addAttribute("message", "Your passwords don't match.");
-            }
+//            if (!newUser.getPassword().equals(verify)) {
+//
+//                model.addAttribute("message", "Your passwords don't match.");
+//            }
 
             return "user/sign-up";
         }
@@ -155,6 +155,7 @@ public class UserController {
         }
         List<User> u = userDao.findByUsername(username);
         User currentUser = u.get(0);
+        model.addAttribute("currentUser", currentUser);
 
         currentUser.setProfilePictureUrl(profilePictureUrl);
         userDao.save(currentUser);
