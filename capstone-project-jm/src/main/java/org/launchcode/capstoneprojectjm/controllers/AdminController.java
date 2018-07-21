@@ -1,10 +1,10 @@
 package org.launchcode.capstoneprojectjm.controllers;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
 import org.launchcode.capstoneprojectjm.models.Data.CategoryDao;
 import org.launchcode.capstoneprojectjm.models.Data.EventDao;
 import org.launchcode.capstoneprojectjm.models.Data.UserDao;
+
 import org.launchcode.capstoneprojectjm.models.Event;
 import org.launchcode.capstoneprojectjm.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import java.util.List;
 
 
 @Controller
@@ -61,21 +61,31 @@ public class AdminController {
             return "redirect:user/login";
         }
 
+        User u = userDao.findByUsername(username).get(0);
+        List<Event> userEventsEdit = u.getEvents();
+        for (int id : ids) {
+            userEventsEdit.remove(eventDao.findOne(id));
+        }
+
+        u.setEvents(userEventsEdit);
+        userDao.save(u);
         for (int id : ids) {
             Event event = eventDao.findOne(id);
             System.out.println(event.getUsers());
-            event.clearUsers();
+            List theUsers = event.getUsers();
+            event.clearUsers(theUsers);
+            userDao.save(theUsers);
+            eventDao.save(event);
             System.out.println(event.getUsers());
-
-        }
-        for (int id : ids) {
             eventDao.delete(id);
+
         }
 
         model.addAttribute("currentUser", user);
         model.addAttribute("title", "Not sure");
         Iterable<Event> events = eventDao.findAll();
         model.addAttribute("events", events);
+
         return "admin/edit-events";
     }
 

@@ -1,18 +1,18 @@
 package org.launchcode.capstoneprojectjm.models;
 
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
+import org.launchcode.capstoneprojectjm.models.Data.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -50,7 +50,6 @@ public class Event {
 
 
     @ManyToMany(mappedBy = "events")
-//    @Cascade(CascadeType.DELETE)
     private List<User> users;
 
     public Event() {
@@ -146,16 +145,28 @@ public class Event {
         this.longitude = longitude;
     }
 
-    public void clearUsers() {
-        List<User> users = this.getUsers();
-        while (users.size() > 1) {
-            for (User u : users) {
-                u.removeFromEvent(this);
+    public void clearUsers(List<User> users) {
 
+        for (User u : users) {
+            List<Event> newEventList = new ArrayList<>();
+            for (Event event : u.getEvents()) {
+                if (event == this) {
+                    continue;
+                } else{
+                    newEventList.add(event);
+                }
             }
+            u.setEvents(newEventList);
 
         }
 
-
     }
+
+
+
+
+
+
+
 }
+

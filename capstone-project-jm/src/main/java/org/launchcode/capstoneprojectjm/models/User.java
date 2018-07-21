@@ -1,7 +1,6 @@
 package org.launchcode.capstoneprojectjm.models;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
@@ -46,7 +45,6 @@ public class User {
 
     @ManyToMany
     @JoinTable(name = "user_ids")
-//    @Cascade(CascadeType.DELETE)
     private List<Event> events;
 
 
@@ -140,11 +138,11 @@ public class User {
     }
 
     public void removeFromEvent(Event event) {
-        while (this.getEvents().size() > 1) {
+
             this.getEvents().remove(event);
             event.getUsers().remove(this);
         }
-    }
+
 
 
 }
