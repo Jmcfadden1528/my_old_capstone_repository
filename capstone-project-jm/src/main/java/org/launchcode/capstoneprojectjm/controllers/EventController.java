@@ -58,6 +58,10 @@ public class EventController {
         }
         List<User> u = userDao.findByUsername(username);
         User currentUser = u.get(0);
+        if (currentUser.getAdmin() != true) {
+            return "redirect:/user/access-denied";
+
+        }
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("title", "Add Event");
         model.addAttribute(new Event());

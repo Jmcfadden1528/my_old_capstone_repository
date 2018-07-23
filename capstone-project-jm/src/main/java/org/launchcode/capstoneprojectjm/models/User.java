@@ -38,7 +38,7 @@ public class User {
     @Size(min = 1, message = "E-mail cannot be left blank")
     private String email;
 
-    private boolean Admin;
+    private boolean Admin = false;
 
     private String profilePictureUrl;
 
@@ -130,7 +130,7 @@ public class User {
 
 
     public boolean getAdmin() {
-        return Admin;
+        return this.Admin;
     }
 
     public void setAdmin(boolean admin) {

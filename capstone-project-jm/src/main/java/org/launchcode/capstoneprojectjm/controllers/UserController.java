@@ -108,8 +108,7 @@ public class UserController {
             }
 
             return "redirect:/event/my-events";
-        }
-        else {
+        } else {
             model.addAttribute("message", "Invalid Password");
             model.addAttribute("title", "User Login");
             return "user/login";
@@ -122,7 +121,7 @@ public class UserController {
 
 
         Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
+        if (cookies != null) {
             for (Cookie c : cookies) {
                 c.setMaxAge(0);
                 c.setPath("/");
@@ -148,7 +147,7 @@ public class UserController {
 
     @RequestMapping(value = "profile-picture-updated")
     public String processProfilePictureForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username,
-     @RequestParam("profilePictureUrl") String profilePictureUrl) {
+                                            @RequestParam("profilePictureUrl") String profilePictureUrl) {
 
         if (username.equals("none")) {
             return "redirect:/user/login";
@@ -166,5 +165,14 @@ public class UserController {
 
 
 
+    @RequestMapping(value = "access-denied")
+    public String processProfilePictureForm(Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+        if (username.equals("none")) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("currentUser", userDao.findByUsername(username).get(0));
+        return "user/access-denied";
+
     }
+}
 
