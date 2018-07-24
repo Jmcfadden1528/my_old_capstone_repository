@@ -1,6 +1,6 @@
 package org.launchcode.capstoneprojectjm.controllers;
 
-import org.launchcode.capstoneprojectjm.models.Data.CategoryDao;
+import org.launchcode.capstoneprojectjm.models.Data.AddressDao;
 import org.launchcode.capstoneprojectjm.models.Data.EventDao;
 import org.launchcode.capstoneprojectjm.models.Data.UserDao;
 import org.launchcode.capstoneprojectjm.models.Event;
@@ -25,7 +25,7 @@ public class EventController {
     private EventDao eventDao; // Allows us to interact with database
 
     @Autowired
-    private CategoryDao categoryDao;
+    private AddressDao addressDao;
 
     @Autowired
     private UserDao userDao;
@@ -70,7 +70,7 @@ public class EventController {
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String processAddEventForm(@ModelAttribute @Valid Event newEvent,
-            Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
+                                      Errors errors, Model model, @CookieValue(value = "user", defaultValue = "none") String username) {
 
         if (username.equals("none")) {
             return "redirect:/user/login";
@@ -84,9 +84,8 @@ public class EventController {
             return "event/add";
         }
 
-        User u = userDao.findByUsername(username).get(0);
         eventDao.save(newEvent);
-        model.addAttribute("currentUser", u);
+        model.addAttribute("currentUser", userDao.findByUsername(username).get(0));
 
         return "event/event-added";
     }

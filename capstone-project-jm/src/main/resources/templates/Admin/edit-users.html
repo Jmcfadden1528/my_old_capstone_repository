@@ -9,9 +9,14 @@
 
 <hr/>
 
-<h3>Select User to Add to Admin Role</h3>
-
-<form action="add-admin" method="post">
+<table cellpadding="35">
+<tr>
+    <th><h3>Select User to Add to Admin Role</h3></th>
+    <th><h3>Select User to Remove from Admin Role</h3></th>
+</tr>
+<tr>
+    <td>
+    <form action="add-admin" method="post">
 
     <div th:each="user : ${users}" class="checkbox">
         <input type="checkbox" name="ids" th:value="${user.id}" th:id="${user.id}"/>
@@ -20,11 +25,12 @@
     </div>
 
     <input type="submit" value="Update Users" />
-</form>
+    </form>
+    </td>
 
-<h3>Select User to Remove from Admin Role</h3>
 
-<form action="remove-admin" method="post">
+<td>
+    <form action="remove-admin" method="post">
 
     <div th:each="adminUser : ${adminUsers}" class="checkbox">
         <input type="checkbox" name="ids" th:value="${adminUser.id}" th:id="${adminUser.id}"/>
@@ -33,7 +39,10 @@
     </div>
 
     <input type="submit" value="Update Users" />
-</form>
+    </form>
+</td>
+</tr>
 
+</table>
 </body>
 </html>

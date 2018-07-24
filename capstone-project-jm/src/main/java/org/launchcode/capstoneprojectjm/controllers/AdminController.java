@@ -1,7 +1,7 @@
 package org.launchcode.capstoneprojectjm.controllers;
 
 
-import org.launchcode.capstoneprojectjm.models.Data.CategoryDao;
+import org.launchcode.capstoneprojectjm.models.Data.AddressDao;
 import org.launchcode.capstoneprojectjm.models.Data.EventDao;
 import org.launchcode.capstoneprojectjm.models.Data.UserDao;
 
@@ -28,7 +28,7 @@ public class AdminController {
     private EventDao eventDao; // Allows us to interact with database
 
     @Autowired
-    private CategoryDao categoryDao;
+    private AddressDao AddressDao;
 
     @Autowired
     private UserDao userDao;

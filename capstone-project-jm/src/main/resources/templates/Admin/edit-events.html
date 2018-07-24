@@ -6,6 +6,14 @@
 <h1 th:text="${title}">Default Title</h1>
 
 <nav th:replace="fragments :: navigation"></nav>
+<br/>
+<table>
+    <tr>
+        <td><a href="/admin/edit-users">Edit Users</a></td>
+        <td>    |    </td>
+        <td><a style="inline" href="/admin/edit-events">Edit Events</a></td>
+    </tr>
+</table>
 
 <form action="remove-event" method="post">
 
