@@ -1,10 +1,7 @@
 package org.launchcode.capstoneprojectjm.models;
 
 
-
-import org.launchcode.capstoneprojectjm.models.Data.UserDao;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +9,7 @@ import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 
 
@@ -32,17 +29,19 @@ public class Event {
     private Date date;
 
     private Time time;
-    //TODO: delete event once date is past.
-    @NotNull
-    @Size(min = 1, message = "location cannot be left blank")
-    private String location;
+
+
+
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private Address address;
 
     @NotNull
     @Size(min = 1, message = "description cannot be left blank")
     private String description;
 
     private String imageUrl;
-
 
     private double latitude;
 
@@ -52,15 +51,16 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private List<User> users;
 
+
     public Event() {
     }
 
 
-    public Event(String name, Date date, Time time, String location, String description) {
+
+    public Event(String name, Date date, Time time, String description) {
         this.name = name;
         this.date = date;
         this.time = time;
-        this.location = location;
         this.description = description;
     }
 
@@ -97,12 +97,12 @@ public class Event {
         this.time = time;
     }
 
-    public String getLocation() {
-        return location;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getDescription() {

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head th:replace="fragments :: head"></head>
+<head th:replace="fragments :: head">
+    <script>
+    function processData = (time) => {
+        var x = document.getElementById(time).value;
+        document.getElementById("demo").innerHTML = x;
+}
+    }
+</script>
+</head>
 <body class="container">
 
 <nav th:replace="fragments :: navigation"></nav>
@@ -31,9 +39,24 @@
         <span th:errors="*{description}" class="errors"></span>
     </div>
     <div class="form-group">
-        <label th:for="location">Location of event: </label>
-        <input  th:field="*{location}" />
-        <span th:errors="*{location}" class="error"></span>
+        <label th:for="address.streetAddress">Street Address: </label>
+        <input  th:field="*{address.streetAddress}" />
+        <span th:errors="*{address}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="address.city">City: </label>
+        <input  th:field="*{address.city}" />
+        <span th:errors="*{address}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="address.zipCode">Zip code: </label>
+        <input  th:field="*{address.zipCode}" />
+        <span th:errors="*{address}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="address.country">Country </label>
+        <input  th:field="*{address.country}" />
+        <span th:errors="*{address}" class="error"></span>
     </div>
     <div class="form-group">
         <label th:for="latitude">Latitude: </label>
@@ -49,10 +72,11 @@
         <label th:for="imageUrl">Link image to URL: </label>
         <input type="text" th:field="*{imageUrl}" name="imageUrl"/>
     </div>
+        <input id="demo" type="submit" value="Add Event" />
 
-    <input type="submit" value="Add Event" />
 </form>
 </div>
+
 
 
 

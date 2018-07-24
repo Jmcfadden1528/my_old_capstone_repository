@@ -10,14 +10,14 @@
 <table>
     <tr>
         <th>Date</th>
-        <th>Location</th>
+        <th>Address</th>
         <th>Time</th>
         <th>Description</th>
     </tr>
 
     <tr>
         <td th:text="${#dates.format(theEvent.date, 'dd-MM-yyyy')}"></td>
-        <td th:text="${theEvent.location}"></td>
+        <td th:text="${theEvent.address}"></td>
         <td th:text="${theEvent.time}"></td>
         <td th:text="${theEvent.description}"></td>
         <td><a th:href="@{'/event/event-added/' + ${theEvent.id}}">Attend event</a></td>
